@@ -1,0 +1,12 @@
+<div class="page-header"><h1>Edit Station</h1><p>Update station details.</p></div>
+
+<div class="panel" style="max-width: 480px;">
+  <form action="/admin/stations/<%= station._id %>" method="POST">
+    <input type="hidden" name="_method" value="PUT" />
+    <div class="form-group"><label>Name</label><input type="text" name="name" required value="<%= station.name %>" /></div>
+    <div class="form-group"><label>Code</label><input type="text" name="code" required value="<%= station.code %>" /></div>
+    <div class="form-group"><label>City</label><input type="text" name="city" required value="<%= station.city %>" /></div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="/admin/stations" class="btn btn-outline" style="color: var(--ink-900); border-color: var(--slate-300);">Cancel</a>
+  </form>
+</div>

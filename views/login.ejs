@@ -1,0 +1,23 @@
+<div class="form-card">
+  <h2>Welcome back</h2>
+  <p class="text-muted mt-8" style="margin-bottom: 24px;">Log in to find your platform.</p>
+
+  <form action="/login" method="POST">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required placeholder="you@example.com" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required placeholder="••••••••" />
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Log In</button>
+  </form>
+
+  <div class="form-footer-link">
+    Don't have an account? <a href="/register">Register here</a>
+  </div>
+  <div class="form-footer-link">
+    <a href="/admin/login">Admin login</a>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="page-header"><h1>Dashboard Analytics</h1><p>A snapshot of RailNav activity.</p></div>
+
+<div class="cards-grid">
+  <div class="dash-card"><div class="icon">🚉</div><h3><%= stats.totalStations %></h3><p>Stations</p></div>
+  <div class="dash-card"><div class="icon">👥</div><h3><%= stats.totalUsers %></h3><p>Registered Passengers</p></div>
+  <div class="dash-card"><div class="icon">⭐</div><h3><%= stats.averageRating %> / 5</h3><p><%= stats.totalRatings %> ratings submitted</p></div>
+  <div class="dash-card"><div class="icon">💡</div><h3><%= stats.totalSuggestions %></h3><p>Suggestions Received</p></div>
+</div>
+
+<div class="panel mt-24">
+  <h3>Complaints by Status</h3>
+  <div class="cards-grid">
+    <% var badgeClass = { Pending: "badge-pending", "In Progress": "badge-progress", Resolved: "badge-resolved" }; %>
+    <% Object.keys(stats.complaintsByStatus).forEach(function(status) { %>
+      <div class="dash-card">
+        <h3><%= stats.complaintsByStatus[status] %></h3>
+        <p><span class="badge <%= badgeClass[status] %>"><%= status %></span></p>
+      </div>
+    <% }) %>
+  </div>
+</div>

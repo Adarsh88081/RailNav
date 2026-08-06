@@ -1,0 +1,31 @@
+<div class="page-header"><h1>Complaints</h1><p>Review and resolve passenger complaints.</p></div>
+
+<div class="panel">
+  <% if (complaints.length === 0) { %>
+    <div class="empty-state">No complaints submitted yet.</div>
+  <% } else { %>
+    <table class="data-table">
+      <thead><tr><th>User</th><th>Station</th><th>Category</th><th>Description</th><th>Status</th></tr></thead>
+      <tbody>
+        <% complaints.forEach(function(c) { %>
+          <tr>
+            <td><%= c.user ? c.user.name : "—" %><br><span class="text-muted" style="font-size:0.8em;"><%= c.user ? c.user.email : "" %></span></td>
+            <td><%= c.station ? c.station.name : "—" %></td>
+            <td style="text-transform:capitalize;"><%= c.category.replace("_", " ") %></td>
+            <td class="text-muted"><%= c.description %></td>
+            <td>
+              <form action="/admin/complaints/<%= c._id %>" method="POST">
+                <input type="hidden" name="_method" value="PUT" />
+                <select name="status" onchange="this.form.submit()">
+                  <option value="Pending" <%= c.status === "Pending" ? "selected" : "" %>>Pending</option>
+                  <option value="In Progress" <%= c.status === "In Progress" ? "selected" : "" %>>In Progress</option>
+                  <option value="Resolved" <%= c.status === "Resolved" ? "selected" : "" %>>Resolved</option>
+                </select>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>

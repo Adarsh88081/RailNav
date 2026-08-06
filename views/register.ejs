@@ -1,0 +1,28 @@
+<div class="form-card">
+  <h2>Create your account</h2>
+  <p class="text-muted mt-8" style="margin-bottom: 24px;">Start navigating stations in seconds.</p>
+
+  <form action="/register" method="POST">
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required placeholder="Jane Doe" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required placeholder="you@example.com" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required minlength="6" placeholder="At least 6 characters" />
+    </div>
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6" placeholder="Re-enter password" />
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+  </form>
+
+  <div class="form-footer-link">
+    Already registered? <a href="/login">Log in</a>
+  </div>
+</div>

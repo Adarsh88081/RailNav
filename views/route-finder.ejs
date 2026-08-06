@@ -1,0 +1,115 @@
+<div class="page-header">
+  <h1>Find Route</h1>
+  <p>Select your station, current location, and destination.</p>
+</div>
+
+<div class="panel">
+  <form action="/route-finder" method="GET">
+    <div class="form-group">
+      <label for="station-select">Railway Station</label>
+      <select id="station-select" name="station" onchange="this.form.submit()">
+        <option value="">Select a station</option>
+        <% stations.forEach(function(s) { %>
+          <option value="<%= s._id %>" <%= String(s._id) === selectedStation ? 'selected' : '' %>>
+            <%= s.name %> (<%= s.code %>)
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    <% if (selectedStation && locations.length) { %>
+      <div class="form-group">
+        <label for="from-select">Current Location</label>
+        <select id="from-select" name="from">
+          <option value="">Select location</option>
+          <% locations.forEach(function(l) { %>
+            <option value="<%= l.name %>" <%= l.name === selectedFrom ? 'selected' : '' %>><%= l.name %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="to-select">Destination</label>
+        <select id="to-select" name="to">
+          <option value="">Select location</option>
+          <% locations.forEach(function(l) { %>
+            <option value="<%= l.name %>" <%= l.name === selectedTo ? 'selected' : '' %>><%= l.name %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Find Route</button>
+    <% } else if (selectedStation) { %>
+      <p class="text-muted">This station doesn't have any locations set up yet. Ask an admin to add some.</p>
+    <% } %>
+  </form>
+</div>
+
+<% if (route) { %>
+  <div class="route-summary">
+    <div>
+      <div class="stat-label">Estimated Distance</div>
+      <div class="stat-value"><%= route.totalDistanceMeters %> m</div>
+    </div>
+    <div>
+      <div class="stat-label">Estimated Time</div>
+      <div class="stat-value"><%= route.estimatedTimeMinutes %> min</div>
+    </div>
+    <div>
+      <div class="stat-label">Route</div>
+      <div class="stat-value" style="font-size:1rem;"><%= route.from %> &rarr; <%= route.to %></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Navigation</h3>
+    <ul class="nav-steps">
+      <% route.navigation.forEach(function(step, idx) { %>
+        <% var isFinal = idx === route.navigation.length - 1; %>
+        <li class="nav-step <%= isFinal ? 'final' : '' %>">
+          <div class="step-badge"><%= isFinal ? '✓' : step.stepNumber %></div>
+          <div>
+            <div class="step-text"><%= step.instruction %></div>
+            <% if (step.distanceMeters > 0) { %>
+              <div class="step-meta">
+                <%= step.distanceMeters %> m
+                <% if (step.arrivesAt) { %> &rarr; arrives near <%= step.arrivesAt %><% } %>
+              </div>
+            <% } %>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h3>Rate this navigation</h3>
+    <form action="/route-finder/rate" method="POST">
+      <input type="hidden" name="station" value="<%= route.stationId %>" />
+      <input type="hidden" name="from" value="<%= selectedFrom %>" />
+      <input type="hidden" name="to" value="<%= selectedTo %>" />
+
+      <div class="star-select" id="star-select">
+        <% for (var n = 1; n <= 5; n++) { %>
+          <label style="cursor:pointer;">
+            <input type="radio" name="stars" value="<%= n %>" style="display:none;" onclick="highlightStars(<%= n %>)" />
+            <span data-value="<%= n %>">★</span>
+          </label>
+        <% } %>
+      </div>
+
+      <textarea name="feedback" placeholder="Optional feedback..." class="mt-16" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--slate-300);"></textarea>
+      <button type="submit" class="btn btn-navy mt-16">Submit Rating</button>
+    </form>
+  </div>
+
+  <script>
+    // Progressive enhancement only — highlights stars visually. Form submission
+    // itself is a plain POST, no fetch/AJAX involved.
+    function highlightStars(n) {
+      document.querySelectorAll('#star-select span').forEach(function (el) {
+        el.classList.toggle('active', parseInt(el.dataset.value, 10) <= n);
+      });
+    }
+  </script>
+<% } %>

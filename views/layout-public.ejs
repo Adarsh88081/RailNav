@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<%- include('partials/head') %>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="/" class="brand">RailNav<span class="dot">.</span></a>
+    <div class="nav-links">
+      <% if (currentUser) { %>
+        <a href="/dashboard">Dashboard</a>
+      <% } else { %>
+        <a href="/#features">Features</a>
+        <a href="/#how-it-works">How it works</a>
+        <a href="/login">Log In</a>
+        <a href="/register" class="btn btn-primary btn-sm">Get Started</a>
+      <% } %>
+    </div>
+  </div>
+</nav>
+
+<%- include('partials/flash') %>
+
+<%- body %>
+
+<footer class="site-footer">
+  <div class="container">
+    &copy; 2026 RailNav — Smart Railway Station Navigation System. Built for passengers, not just platforms.
+  </div>
+</footer>
+
+</body>
+</html>

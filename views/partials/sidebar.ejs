@@ -1,0 +1,14 @@
+<aside class="sidebar">
+  <div class="brand">RailNav<span class="dot">.</span></div>
+  <nav>
+    <a href="/dashboard" class="<%= currentPath === '/dashboard' ? 'active' : '' %>">Dashboard</a>
+    <a href="/route-finder" class="<%= currentPath === '/route-finder' ? 'active' : '' %>">Find Route</a>
+    <a href="/facilities" class="<%= currentPath === '/facilities' ? 'active' : '' %>">Facilities</a>
+    <a href="/complaint" class="<%= currentPath === '/complaint' ? 'active' : '' %>">Complaint</a>
+    <a href="/suggestion" class="<%= currentPath === '/suggestion' ? 'active' : '' %>">Suggestions</a>
+    <a href="/profile" class="<%= currentPath === '/profile' ? 'active' : '' %>">Profile</a>
+  </nav>
+  <form action="/logout" method="POST">
+    <button type="submit" class="btn btn-outline logout-btn">Log Out</button>
+  </form>
+</aside>

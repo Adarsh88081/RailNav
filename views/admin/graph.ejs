@@ -1,0 +1,112 @@
+<div class="page-header"><h1>Locations & Navigation Graph</h1><p>Build the walkable graph passengers navigate through.</p></div>
+
+<div class="panel">
+  <form action="/admin/graph" method="GET">
+    <div class="form-group">
+      <label for="station-select">Select Station</label>
+      <select id="station-select" name="station" onchange="this.form.submit()">
+        <option value="">Select a station</option>
+        <% stations.forEach(function(s) { %>
+          <option value="<%= s._id %>" <%= String(s._id) === selectedStation ? 'selected' : '' %>><%= s.name %> (<%= s.code %>)</option>
+        <% }) %>
+      </select>
+    </div>
+  </form>
+</div>
+
+<% if (selectedStation) { %>
+  <div class="panel">
+    <h3>Add Location (Node)</h3>
+    <form action="/admin/graph/locations" method="POST" class="inline-form-grid">
+      <input type="hidden" name="station" value="<%= selectedStation %>" />
+      <div class="form-group"><label>Name</label><input type="text" name="name" required placeholder="e.g. Platform 7" /></div>
+      <div class="form-group">
+        <label>Type</label>
+        <select name="type" required>
+          <% locationTypes.forEach(function(t) { %>
+            <option value="<%= t %>"><%= t.replace(/_/g, " ") %></option>
+          <% }) %>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Location</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h3>Add Edge (Walkable Connection)</h3>
+    <% if (locations.length < 2) { %>
+      <p class="text-muted">Add at least two locations before creating an edge.</p>
+    <% } else { %>
+      <form action="/admin/graph/edges" method="POST" class="inline-form-grid">
+        <input type="hidden" name="station" value="<%= selectedStation %>" />
+        <div class="form-group">
+          <label>From</label>
+          <select name="from" required>
+            <% locations.forEach(function(l) { %><option value="<%= l._id %>"><%= l.name %></option><% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>To</label>
+          <select name="to" required>
+            <% locations.forEach(function(l) { %><option value="<%= l._id %>"><%= l.name %></option><% }) %>
+          </select>
+        </div>
+        <div class="form-group"><label>Distance (meters)</label><input type="number" name="distanceMeters" required min="1" /></div>
+        <div class="form-group" style="grid-column: 1 / -1;"><label>Instruction</label><input type="text" name="instruction" required placeholder="e.g. Walk straight for 40 meters" /></div>
+        <button type="submit" class="btn btn-primary">Add Edge</button>
+      </form>
+    <% } %>
+  </div>
+
+  <div class="panel">
+    <h3>Locations</h3>
+    <% if (locations.length === 0) { %>
+      <div class="empty-state">No locations added yet.</div>
+    <% } else { %>
+      <table class="data-table">
+        <thead><tr><th>Name</th><th>Type</th><th></th></tr></thead>
+        <tbody>
+          <% locations.forEach(function(l) { %>
+            <tr>
+              <td><%= l.name %></td>
+              <td style="text-transform:capitalize;"><%= l.type.replace(/_/g, " ") %></td>
+              <td>
+                <form action="/admin/graph/locations/<%= l._id %>" method="POST" onsubmit="return confirm('Delete this location? Connected edges may break.');">
+                  <input type="hidden" name="_method" value="DELETE" />
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+
+  <div class="panel">
+    <h3>Edges</h3>
+    <% if (edges.length === 0) { %>
+      <div class="empty-state">No edges added yet.</div>
+    <% } else { %>
+      <table class="data-table">
+        <thead><tr><th>From</th><th>To</th><th>Distance</th><th>Instruction</th><th></th></tr></thead>
+        <tbody>
+          <% edges.forEach(function(ed) { %>
+            <tr>
+              <td><%= ed.from ? ed.from.name : "—" %></td>
+              <td><%= ed.to ? ed.to.name : "—" %></td>
+              <td><%= ed.distanceMeters %> m</td>
+              <td class="text-muted"><%= ed.instruction %></td>
+              <td>
+                <form action="/admin/graph/edges/<%= ed._id %>" method="POST" onsubmit="return confirm('Delete this edge?');">
+                  <input type="hidden" name="_method" value="DELETE" />
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+<% } %>

@@ -1,0 +1,20 @@
+<div class="form-card">
+  <h2>Admin Login</h2>
+  <p class="text-muted mt-8" style="margin-bottom: 24px;">Manage stations, complaints, and the navigation graph.</p>
+
+  <form action="/admin/login" method="POST">
+    <div class="form-group">
+      <label for="email">Admin Email</label>
+      <input type="email" id="email" name="email" required placeholder="admin@railnav.com" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required placeholder="••••••••" />
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Log In as Admin</button>
+  </form>
+
+  <p class="text-muted mt-16" style="font-size: 0.8rem; text-align:center;">
+    Default seeded credentials: see ADMIN_EMAIL / ADMIN_PASSWORD in your .env file.
+  </p>
+</div>

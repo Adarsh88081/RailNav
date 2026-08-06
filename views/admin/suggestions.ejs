@@ -1,0 +1,16 @@
+<div class="page-header"><h1>Suggestions</h1><p>Feedback submitted by passengers.</p></div>
+
+<div class="panel">
+  <% if (suggestions.length === 0) { %>
+    <div class="empty-state">No suggestions yet.</div>
+  <% } else { %>
+    <table class="data-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Suggestion</th></tr></thead>
+      <tbody>
+        <% suggestions.forEach(function(s) { %>
+          <tr><td><%= s.name %></td><td><%= s.email %></td><td class="text-muted"><%= s.suggestion %></td></tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+</div>
